@@ -1,0 +1,2 @@
+# myVIM
+Some VIM config
