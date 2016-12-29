@@ -13,6 +13,7 @@ set shiftwidth=4
 set softtabstop=4
 set expandtab " 设置替换所有tab
 set cursorline " 突出显示当前行
+set cc=80 " 第80列高亮
 " set cursorcolumn " 突出显示当前列
 set hlsearch " 高亮查找结果
 set cmdheight=1 " 设定命令行的行数为 1
