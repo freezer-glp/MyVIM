@@ -8,7 +8,7 @@ syntax on " 语法高亮
 set ruler " 设置标尺
 set ic " 设置忽略大小写查找
 filetype indent on " 自适应缩进
-set ts=4  " 设置tab为4个空格
+set ts=2  " 设置tab为4个空格
 set shiftwidth=4
 set softtabstop=4
 set expandtab " 设置替换所有tab
@@ -38,6 +38,7 @@ map <Leader>fd g]
 map <Leader>ww :w<CR>
 map <Leader>wq :wq<CR>
 map <Leader>qq :q<CR>
+map <Leader>qa :qa<CR>
 
 " 基于缩进或语法进行代码折叠
 "set foldmethod=indent
@@ -52,15 +53,19 @@ map <Leader>bl :MBEToggle<cr>
 map <Leader>tt :MBEbn<cr>
 map <Leader>rr :MBEbp<CR>
 
-map <C-q> :!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q .<CR>
+" 快捷键生成ctags的tag，ct=create tags
+map <Leader>ct :!ctags -R --c++-kinds=+p+l+x+c+d+e+f+g+m+n+s+t+u+v --fields=+liaS --extra=+q --language-force=c++ .<CR>
 " 正向遍历同名标签
 nmap <Leader>tn :tnext<CR>
 " 反向遍历同名标签
 nmap <Leader>tp :tprevious<CR>
+" 返回结果列表
+nmap <Leader>ts :tselect<CR>
 
 set vb " stop vim bell
 
-set tags=/home/lingpu.glp/uts/tags;
+" set tags=/home/lingpu.glp/uts/tags;
+set tags=/home/lingpu.glp/online-engine/tags;
 set autochdir
 " 使用 NERDTree 插件查看工程文件。设置快捷键，速记：file list
 nmap <Leader>fl :NERDTreeToggle<CR>
