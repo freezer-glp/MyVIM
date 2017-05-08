@@ -65,7 +65,9 @@ nmap <Leader>ts :tselect<CR>
 set vb " stop vim bell
 
 " set tags=/home/lingpu.glp/uts/tags;
-set tags=/home/lingpu.glp/online-engine/tags;
+" set tags=/home/lingpu.glp/online-engine/tags;
+set tags=/home/lingpu.glp/dmp_ums_erpc/tags;
+" set tags=home/lingpu.glp/dmp_um/tags;
 set autochdir
 " 使用 NERDTree 插件查看工程文件。设置快捷键，速记：file list
 nmap <Leader>fl :NERDTreeToggle<CR>
