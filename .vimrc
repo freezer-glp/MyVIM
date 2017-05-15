@@ -1,5 +1,5 @@
 augroup filetype
-    autocmd! BufRead,BufNewFile BUILD set filetype=blade
+autocmd! BufRead,BufNewFile BUILD set filetype=blade
 augroup end
 
 set nu " 显示行数
@@ -7,6 +7,9 @@ syntax enable
 syntax on " 语法高亮
 set ruler " 设置标尺
 set ic " 设置忽略大小写查找
+set t_Co=256 " 设置256色支持airline
+set ttyfast " 加快光标上下移动速度
+hi Search term=reverse ctermfg=0 ctermbg=40 guibg=Grey40 " 设置查找反色为绿色
 filetype indent on " 自适应缩进
 set ts=2  " 设置tab为4个空格
 set shiftwidth=4
@@ -18,7 +21,7 @@ set cc=80 " 第80列高亮
 set hlsearch " 高亮查找结果
 set cmdheight=1 " 设定命令行的行数为 1
 set laststatus=2 " 显示状态栏 (默认值为 1, 无法显示状态栏)
-set statusline=\ %<%F[%1*%M%*%n%R%H]%=\ %y\ %0(%{&fileformat}\ %{&encoding}\ %c:%l/%L%)\ 
+" set statusline=\ %<%F[%1*%M%*%n%R%H]%=\ %y\ %0(%{&fileformat}\ %{&encoding}\ %c:%l/%L%)\ 
 set guifont=YaHei\ Consolas\ Hybrid\ 15 " 设置字体
 set nocompatible " 去掉vi一致性
 set backspace=indent,eol,start " 设置退格键可以合并两行
@@ -40,6 +43,48 @@ map <Leader>wq :wq<CR>
 map <Leader>qq :q<CR>
 map <Leader>qa :qa<CR>
 
+"###################    set file head start  #########################
+""autocmd创建新文件自动调用setfilehead()函数
+autocmd BufNewFile *.cpp,*.c,*.h exec ":call Setfilehead()"
+func Setfilehead()
+    call append(0, '/*')
+    call append(1, ' * Copyright (c) '.strftime("%Y").' Alibaba Inc.')
+    call append(2, ' * All rights reserved.' )
+    call append(3, ' *')
+    call append(4, ' * Author: linpu<lingpu.glp@alibaba-inc.com>')
+    call append(5, ' * Date: '.strftime("%Y-%m-%d"))
+    call append(6, ' * Brief: ')
+    call append(7, ' */')
+    call append(8, '')
+    exec "normal 7gg"
+    exec "normal A"
+endfunc
+"    "映射F2快捷键，生成后跳转至第10行，然后使用o进入vim的插入模式
+"    map <F2> :call Setfilehead()<CR>:10<CR>o
+"###################    set file head end ##########################
+"
+"doxydentookit 用于自动生成函数注释
+let g:DoxygenToolkit_briefTag_funcName = "no"
+" for C++ style, change the '@' to '\'
+" let g:DoxygenToolkit_commentType = "C++"
+" let s:licenseTag = "Copyright (c)017 Alibaba Inc. "
+" let g:DoxygenToolkit_licenseTag = s:licenseTag
+let g:DoxygenToolkit_briefTag_pre = "@brief "
+let g:DoxygenToolkit_templateParamTag_pre = "@tparam "
+let g:DoxygenToolkit_paramTag_pre = "@param "
+let g:DoxygenToolkit_returnTag = "@return "
+let g:DoxygenToolkit_throwTag_pre = "@throw " " @exception is also valid
+let g:DoxygenToolkit_fileTag = "file "
+let g:DoxygenToolkit_dateTag = "date "
+let g:DoxygenToolkit_authorTag = "author "
+" let g:DoxygenToolkit_versionTag = "version "
+let g:DoxygenToolkit_blockTag = "name "
+let g:DoxygenToolkit_classTag = "class "
+let g:DoxygenToolkit_authorName = "linpu<lingpu.glp@alibaba-inc.com>"
+let g:doxygen_enhanced_color = 1
+"let g:load_doxygen_syntax= 1
+nmap <Leader>m :Dox<CR>
+
 " 基于缩进或语法进行代码折叠
 "set foldmethod=indent
 set foldmethod=syntax
@@ -50,8 +95,8 @@ set nofoldenable
 " 显示/隐藏 MiniBufExplorer 窗口
 map <Leader>bl :MBEToggle<cr>
 " buffer 切换快捷键
-map <Leader>tt :MBEbn<cr>
-map <Leader>rr :MBEbp<CR>
+map <Leader>tt :bn<cr>
+map <Leader>rr :bp<CR>
 
 " 快捷键生成ctags的tag，ct=create tags
 map <Leader>ct :!ctags -R --c++-kinds=+p+l+x+c+d+e+f+g+m+n+s+t+u+v --fields=+liaS --extra=+q --language-force=c++ .<CR>
@@ -63,12 +108,14 @@ nmap <Leader>tp :tprevious<CR>
 nmap <Leader>ts :tselect<CR>
 
 set vb " stop vim bell
-
+set autochdir
 " set tags=/home/lingpu.glp/uts/tags;
 " set tags=/home/lingpu.glp/online-engine/tags;
-set tags=/home/lingpu.glp/dmp_ums_erpc/tags;
+" set tags=/home/lingpu.glp/dmp_ums_erpc/tags;
 " set tags=home/lingpu.glp/dmp_um/tags;
-set autochdir
+" 下面这种设置方式可以逐级查找tags文件
+set tags=tags;/
+
 " 使用 NERDTree 插件查看工程文件。设置快捷键，速记：file list
 nmap <Leader>fl :NERDTreeToggle<CR>
 " 设置NERDTree子窗口宽度
@@ -137,6 +184,35 @@ let g:tagbar_type_cpp = {
      \ }
 \ }
 
+"--------------------------------------------------------------------------
+""vim-airline
+"--------------------------------------------------------------------------
+"这个是安装字体后 必须设置此项" 
+let g:airline_powerline_fonts = 1 
+let g:airline_inactive_collapse = 1
+let g:airline#extensions#tabline#enabled = 1
+let g:airline_section_c="%f"
+let g:airline_section_x="%y"
+"let g:airline#extensions#branch#enabled=0
+"let g:airline#extensions#tabline#buffer_nr_show = 1
+" tabline中当前buffer两端的分隔字符
+let g:airline#extensions#tabline#left_sep = ' '
+" tabline中未激活buffer两端的分隔字符
+let g:airline#extensions#tabline#left_alt_sep = '|'
+let g:airline#extensions#tabline#fnamemod = ':t'
+let g:airline_theme='luna' 
+if !exists('g:airline_symbols')
+   let g:airline_symbols = {}
+endif
+
+" let g:airline_left_sep = ''
+" let g:airline_left_alt_sep = ''
+" let g:airline_right_sep = ''
+" let g:airline_right_alt_sep = ''
+" let g:airline_symbols.branch = ''
+" let g:airline_symbols.readonly = ''
+" let g:airline_symbols.linenr = ''
+
 " vundle 环境设置
 filetype off
 set rtp+=~/.vim/bundle/Vundle.vim
@@ -164,12 +240,16 @@ Plugin 'SirVer/ultisnips'
 " Plugin 'Valloric/YouCompleteMe'
 Plugin 'derekwyatt/vim-protodef'
 Plugin 'scrooloose/nerdtree'
-Plugin 'fholgado/minibufexpl.vim'
+" Plugin 'fholgado/minibufexpl.vim'
 Plugin 'gcmt/wildfire.vim'
 Plugin 'sjl/gundo.vim'
 Plugin 'Lokaltog/vim-easymotion'
 Plugin 'suan/vim-instant-markdown'
 Plugin 'lilydjwg/fcitx.vim'
+Plugin 'vim-airline/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
+Plugin 'tpope/vim-fugitive'
+Plugin 'vim-scripts/DoxygenToolkit.vim'
 " 插件列表结束
 call vundle#end()
 filetype plugin indent on
