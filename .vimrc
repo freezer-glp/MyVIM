@@ -12,8 +12,8 @@ set ttyfast " 加快光标上下移动速度
 hi Search term=reverse ctermfg=0 ctermbg=40 guibg=Grey40 " 设置查找反色为绿色
 filetype indent on " 自适应缩进
 set ts=2  " 设置tab为4个空格
-set shiftwidth=4
-set softtabstop=4
+set shiftwidth=2
+set softtabstop=2
 set expandtab " 设置替换所有tab
 set cursorline " 突出显示当前行
 set cc=80 " 第80列高亮
@@ -42,6 +42,8 @@ map <Leader>ww :w<CR>
 map <Leader>wq :wq<CR>
 map <Leader>qq :q<CR>
 map <Leader>qa :qa<CR>
+" 关闭buffer
+map <Leader>bd :bd<CR>
 
 "###################    set file head start  #########################
 ""autocmd创建新文件自动调用setfilehead()函数
@@ -59,8 +61,8 @@ func Setfilehead()
     exec "normal 7gg"
     exec "normal A"
 endfunc
-"    "映射F2快捷键，生成后跳转至第10行，然后使用o进入vim的插入模式
-"    map <F2> :call Setfilehead()<CR>:10<CR>o
+"    "映射F2快捷键，生成后跳转至第7行，然后使用o进入vim的插入模式
+    map <F12> :call Setfilehead()<CR>:7<CR>o
 "###################    set file head end ##########################
 "
 "doxydentookit 用于自动生成函数注释
@@ -143,6 +145,7 @@ let g:tagbar_compact=1
 let g:indent_guides_enable_on_vim_startup=1 " 随vim启动
 let g:indent_guides_start_level=2
 let g:indent_guides_guide_size=1
+let g:indent_guides_auto_colors = 0
 :nmap <silent> <Leader>i <Plug>IndentGuidesToggle
 
 "" 配置fast-switch
@@ -214,6 +217,8 @@ endif
 " let g:airline_symbols.linenr = ''
 
 " vundle 环境设置
+" 安装命令：
+" :Plugin<Install|Clean|Search>
 filetype off
 set rtp+=~/.vim/bundle/Vundle.vim
 " vundle 管理的插件列表必须位于 vundle#begin() 和 vundle#end() 之间
