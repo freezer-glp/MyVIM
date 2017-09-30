@@ -151,6 +151,110 @@ let g:indent_guides_auto_colors = 0
 "" 配置fast-switch
 nmap <silent> <Leader>sw :FSHere<cr>
 
+"" 配置ctrlp
+let g:ctrlp_map = '<c-p>'
+let g:ctrlp_cmd = 'CtrlP'
+map <leader>f :CtrlPMRU<CR>
+let g:ctrlp_working_path_mode = 'ra' " 默认工作目录为当前或有.git的目录
+set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*.svn/*     " MacOSX/Linux
+"let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$'
+let g:ctrlp_custom_ignore = {
+  \ 'dir':  '\v[\/]\.(git|hg|svn)$',
+  \ 'file': '\v\.(exe|so|dll)$',
+  \ }
+let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files . -co --exclude-standard', 'find %s -type f']
+if executable('ag')
+  " Use Ag over Grep
+  set grepprg=ag\ --nogroup\ --nocolor
+  " Use ag in CtrlP for listing files.
+  let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+  " Ag is fast enough that CtrlP doesn't need to cache
+  let g:ctrlp_use_caching = 0
+endif
+
+"" 配置ctrlp funky
+nnoremap <Leader>fu :CtrlPFunky<Cr>
+" narrow the list down with a word under cursor
+nnoremap <Leader>fU :execute 'CtrlPFunky ' . expand('<cword>')<Cr>
+let g:ctrlp_funky_syntax_highlight = 1
+let g:ctrlp_extensions = ['funky']
+
+"" 配置syntastic
+"设置error和warning的标志
+"set statusline+=%#warningmsg#
+"set statusline+=%{SyntasticStatuslineFlag()}
+"set statusline+=%*
+"let g:syntastic_enable_signs = 1
+"let g:syntastic_error_symbol='✗'
+"let g:syntastic_warning_symbol='►'
+""总是打开Location List（相当于QuickFix）窗口，如果你发现syntastic因为与其他插件冲突而经常崩溃，将下面选项置0
+"let g:syntastic_always_populate_loc_list = 1
+""自动打开Locaton List，默认值为2，表示发现错误时不自动打开，当修正以后没有再发现错误时自动关闭，置1表示自动打开自动关闭，0表示关闭自动打开和自动关闭，3表示自动打开，但不自动关闭
+"let g:syntastic_auto_loc_list = 1
+""修改Locaton List窗口高度
+"let g:syntastic_loc_list_height = 5
+""打开文件时自动进行检查
+"let g:syntastic_check_on_open = 1
+""自动跳转到发现的第一个错误或警告处
+""let g:syntastic_auto_jump = 1
+""进行实时检查，如果觉得卡顿，将下面的选项置为1
+"let g:syntastic_check_on_wq = 0
+""高亮错误
+""let g:syntastic_enable_highlighting=1
+""让syntastic支持C++11
+""let g:syntastic_cpp_compiler = 'clang++'
+""let g:syntastic_cpp_compiler_options = ' -std=c++11 -stdlib=libc++'
+""let g:syntastic_cpp_checkers = ['gcc']
+""let g:syntastic_cpp_compiler = 'gcc'
+""let g:syntastic_cpp_compiler_options = '-std=c++11'
+"""设置pyflakes为默认的python语法检查工具
+""let g:syntastic_python_checkers = ['pyflakes']
+""修复syntastic使用:lnext和:lprev出现的跳转问题，同时修改键盘映射使用sn和sp进行跳转
+"function! <SID>LocationPrevious()                       
+"  try                                                   
+"    lprev                                               
+"  catch /^Vim\%((\a\+)\)\=:E553/                        
+"    llast                                               
+"  endtry                                                
+"endfunction                                             
+"function! <SID>LocationNext()                           
+"  try                                                   
+"    lnext                                               
+"  catch /^Vim\%((\a\+)\)\=:E553/                        
+"   lfirst                                              
+"  endtry                                                
+"endfunction                                             
+"nnoremap <silent> <Plug>LocationPrevious    :<C-u>exe 'call <SID>LocationPrevious()'<CR>          
+"nnoremap <silent> <Plug>LocationNext        :<C-u>exe 'call <SID>LocationNext()'<CR>
+"nmap <silent> sp    <Plug>LocationPrevious              
+"nmap <silent> sn    <Plug>LocationNext
+"关闭syntastic语法检查, 鼠标复制代码时用到, 防止把错误标志给复制了
+"nnoremap <silent> <Leader>ec :SyntasticToggleMode<CR>
+"function! ToggleErrors()
+"    let old_last_winnr = winnr('$')
+"    lclose
+"    if old_last_winnr == winnr('$')
+"        " Nothing was closed, open syntastic error location panel
+"        Errors
+"    endif
+"endfunction
+
+" 配置multi_cursor
+let g:multi_cursor_use_default_mapping=0
+" Default mapping
+let g:multi_cursor_next_key='<C-n>'
+let g:multi_cursor_prev_key='<C-l>'
+let g:multi_cursor_skip_key='<C-x>'
+let g:multi_cursor_quit_key='<Esc>'
+
+"" 配置wildfire
+" This selects the next closest text object.
+map <SPACE> <Plug>(wildfire-fuel)
+ " This selects the previous closest text object.
+vmap <Leader><SPACE> <Plug>(wildfire-water)
+
+" 配置gundo
+nnoremap <leader>h :GundoToggle<CR>
 
 " 设置 ctags 对哪些代码标识符生成标签
 let g:tagbar_type_cpp = {
@@ -234,14 +338,15 @@ Plugin 'derekwyatt/vim-fswitch'
 " Plugin 'kshenoy/vim-signature'
 Plugin 'vim-scripts/BOOKMARKS--Mark-and-Highlight-Full-Lines'
 Plugin 'majutsushi/tagbar'
-Plugin 'vim-scripts/indexer.tar.gz'
-Plugin 'vim-scripts/DfrankUtil'
-Plugin 'vim-scripts/vimprj'
-Plugin 'dyng/ctrlsf.vim'
+" Plugin 'vim-scripts/indexer.tar.gz'
+" Plugin 'vim-scripts/DfrankUtil'
+" Plugin 'vim-scripts/vimprj'
+" Plugin 'dyng/ctrlsf.vim'
 Plugin 'terryma/vim-multiple-cursors'
 Plugin 'scrooloose/nerdcommenter'
-Plugin 'vim-scripts/DrawIt'
-Plugin 'SirVer/ultisnips'
+" Plunipsin 'vim-scripts/DrawIt'
+"Plugin 'SirVer/ultisnips'
+"Plugin 'honza/vim-snippets'
 " Plugin 'Valloric/YouCompleteMe'
 Plugin 'derekwyatt/vim-protodef'
 Plugin 'scrooloose/nerdtree'
@@ -249,12 +354,15 @@ Plugin 'scrooloose/nerdtree'
 Plugin 'gcmt/wildfire.vim'
 Plugin 'sjl/gundo.vim'
 Plugin 'Lokaltog/vim-easymotion'
-Plugin 'suan/vim-instant-markdown'
-Plugin 'lilydjwg/fcitx.vim'
+" Plugin 'suan/vim-instant-markdown'
+" Plugin 'lilydjwg/fcitx.vim'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'tpope/vim-fugitive'
 Plugin 'vim-scripts/DoxygenToolkit.vim'
+Plugin 'ctrlpvim/ctrlp.vim'
+Plugin 'tacahiroy/ctrlp-funky'
+" Plugin 'vim-syntastic/syntastic'
 " 插件列表结束
 call vundle#end()
 filetype plugin indent on
