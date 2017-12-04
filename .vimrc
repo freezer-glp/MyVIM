@@ -154,8 +154,10 @@ nmap <silent> <Leader>sw :FSHere<cr>
 "" 配置ctrlp
 let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlP'
-map <leader>f :CtrlPMRU<CR>
+"map <leader>f :CtrlPMRU<CR>
+map <leader>f :CtrlPMixed<CR>
 let g:ctrlp_working_path_mode = 'ra' " 默认工作目录为当前或有.git的目录
+" let g:ctrlp_working_path_mode = 0
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*.svn/*     " MacOSX/Linux
 "let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$'
 let g:ctrlp_custom_ignore = {
