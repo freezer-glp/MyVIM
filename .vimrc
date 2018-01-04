@@ -27,6 +27,9 @@ set nocompatible " 去掉vi一致性
 set backspace=indent,eol,start " 设置退格键可以合并两行
 let mapleader=";" " 设置<leader>为;
 " let g:Powerline_colorscheme='solarized256'
+set fileencodings=utf-8,ucs-bom,gb18030,gbk,gb2312,cp936
+set termencoding=utf-8
+set encoding=utf-8
 
 " 按键映射
 " <Esc>代表Escape键:<CR>代表Enter键；<D>代表Command键。
