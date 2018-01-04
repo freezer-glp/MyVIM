@@ -6,6 +6,8 @@ set nu " 显示行数
 syntax enable
 syntax on " 语法高亮
 set ruler " 设置标尺
+set noeb " 设置关闭提示音
+set vb t_vb= " 设置关闭闪屏
 set ic " 设置忽略大小写查找
 set t_Co=256 " 设置256色支持airline
 set ttyfast " 加快光标上下移动速度
