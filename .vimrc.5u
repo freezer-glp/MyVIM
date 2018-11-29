@@ -50,8 +50,6 @@ map <Leader>qq :q<CR>
 map <Leader>qa :qa<CR>
 " 关闭buffer
 map <Leader>bd :bd<CR>
-" 0号剪贴板
-map <Leader>pp "0p
 
 "###################    set file head start  #########################
 ""autocmd创建新文件自动调用setfilehead()函数
