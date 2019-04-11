@@ -1,5 +1,5 @@
 augroup filetype
-autocmd! BufRead,BufNewFile BUILD set filetype=blade
+ autocmd! BufRead,BufNewFile BUILD set filetype=blade
 augroup end
 
 set nu " 显示行数
@@ -55,7 +55,7 @@ map <Leader>pp "0p
 
 "###################    set file head start  #########################
 ""autocmd创建新文件自动调用setfilehead()函数
-autocmd BufNewFile *.cpp,*.c,*.h exec ":call Setfilehead()"
+autocmd BufNewFile *.cpp,*.c,*.cc,*.h exec ":call Setfilehead()"
 func Setfilehead()
     call append(0, '/*')
     call append(1, ' * Copyright (c) '.strftime("%Y").' Alibaba Inc.')
@@ -67,10 +67,11 @@ func Setfilehead()
     call append(7, ' */')
     call append(8, '')
     exec "normal 7gg"
-    exec "normal A"
+    "exec "normal A"
 endfunc
 "    "映射F2快捷键，生成后跳转至第7行，然后使用o进入vim的插入模式
-    map <F12> :call Setfilehead()<CR>:7<CR>o
+    "map <F12> :call Setfilehead()<CR>:7<CR>o
+    map <F12> :call Setfilehead()<CR>A
 "###################    set file head end ##########################
 "
 "doxydentookit 用于自动生成函数注释
@@ -132,13 +133,15 @@ nmap <Leader>fl :NERDTreeToggle<CR>
 let NERDTreeWinSize=32
 " 设置NERDTree子窗口位置
 " let NERDTreeWinPos="right"
-let NERDTreeWinPos="left"
+ let NERDTreeWinPos="left"
 " 显示隐藏文件
 let NERDTreeShowHidden=1
 " NERDTree 子窗口中不显示冗余帮助信息
 let NERDTreeMinimalUI=1
 " 删除文件时自动删除文件对应 buffer
 let NERDTreeAutoDeleteBuffer=1
+" 修改文件间隔符，修复首字母丢失问题
+let NERDTreeNodeDelimiter = "\t"
 
 " 设置 tagbar 子窗口的位置出现在主编辑区的左边 
 let tagbar_right=1 
@@ -149,15 +152,43 @@ let tagbar_width=32
 " tagbar 子窗口中不显示冗余帮助信息 
 let g:tagbar_compact=1
 
-"" 配置indent guides
-let g:indent_guides_enable_on_vim_startup=1 " 随vim启动
-let g:indent_guides_start_level=2
-let g:indent_guides_guide_size=1
-let g:indent_guides_auto_colors = 0
-:nmap <silent> <Leader>i <Plug>IndentGuidesToggle
+highlight DiffAdd    cterm=bold ctermfg=10 ctermbg=17 gui=none guifg=bg guibg=Red
+highlight DiffDelete cterm=bold ctermfg=10 ctermbg=17 gui=none guifg=bg guibg=Red
+highlight DiffChange cterm=bold ctermfg=10 ctermbg=17 gui=none guifg=bg guibg=Red
+highlight DiffText   cterm=bold ctermfg=10 ctermbg=88 gui=none guifg=bg guibg=Red
+
+"" 配置indent guides(目前关闭，使用indentline替代)
+" 配置default修复启动时normal colorscheme报错
+" colorscheme default
+" let g:indent_guides_enable_on_vim_startup=1 " 随vim启动
+" let g:indent_guides_start_level=2
+" let g:indent_guides_guide_size=1
+" 取消自动配色，手动配置
+" let g:indent_guides_auto_colors = 0
+ "hi IndentGuidesOdd  guibg=red   ctermbg=3
+ "hi IndentGuidesEven guibg=green ctermbg=4
+" hi IndentGuidesOdd ctermbg=236
+" hi IndentGuidesEven ctermbg=237
+" autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd guibg=darkgrey ctermbg=252
+" autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg=darkgrey ctermbg=251
+set list
+" 设置tag，尾空格的显示形式
+set listchars=tab:>-,trail:-,extends:>,precedes:<
+" nmap <silent> <Leader>i <Plug>IndentGuidesToggle
+
+"" 配置indent line
+nmap <silent> <Leader>i :IndentLinesToggle<cr>
+let g:indentLine_enabled = 0
 
 "" 配置fast-switch
 nmap <silent> <Leader>sw :FSHere<cr>
+" let b:fswitchdst  = 'cc,c,cpp'
+augroup mycppfiles
+ au!
+ au BufEnter *.h let b:fswitchdst  = 'cpp,cc,C'
+ au BufEnter *.cc let b:fswitchdst  = 'h'
+ "au BufEnter *.h let b:fswitchlocs = 'reg:/include/src/,reg:/include.*/src/'
+augroup END
 
 "" 配置ctrlp
 let g:ctrlp_map = '<c-p>'
@@ -342,11 +373,12 @@ Plugin 'VundleVim/Vundle.vim'
 " Plugin 'tomasr/molokai'
 " Plugin 'vim-scripts/phd'
 " Plugin 'Lokaltog/vim-powerline'
-Plugin 'octol/vim-cpp-enhanced-highlight'
-Plugin 'nathanaelkane/vim-indent-guides'
+" Plugin 'octol/vim-cpp-enhanced-highlight'
+" Plugin 'nathanaelkane/vim-indent-guides'
+Plugin 'Yggdroot/indentLine'
 Plugin 'derekwyatt/vim-fswitch'
 " Plugin 'kshenoy/vim-signature'
-Plugin 'vim-scripts/BOOKMARKS--Mark-and-Highlight-Full-Lines'
+" Plugin 'vim-scripts/BOOKMARKS--Mark-and-Highlight-Full-Lines'
 Plugin 'majutsushi/tagbar'
 " Plugin 'vim-scripts/indexer.tar.gz'
 " Plugin 'vim-scripts/DfrankUtil'
@@ -362,8 +394,8 @@ Plugin 'derekwyatt/vim-protodef'
 Plugin 'scrooloose/nerdtree'
 " Plugin 'fholgado/minibufexpl.vim'
 Plugin 'gcmt/wildfire.vim'
-Plugin 'sjl/gundo.vim'
-Plugin 'Lokaltog/vim-easymotion'
+" Plugin 'sjl/gundo.vim'
+" Plugin 'Lokaltog/vim-easymotion'
 " Plugin 'suan/vim-instant-markdown'
 " Plugin 'lilydjwg/fcitx.vim'
 Plugin 'vim-airline/vim-airline'
@@ -373,6 +405,7 @@ Plugin 'vim-scripts/DoxygenToolkit.vim'
 Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'tacahiroy/ctrlp-funky'
 " Plugin 'vim-syntastic/syntastic'
+" Plugin 'yonchu/accelerated-smooth-scroll'
 " 插件列表结束
 call vundle#end()
 filetype plugin indent on
