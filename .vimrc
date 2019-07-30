@@ -58,10 +58,10 @@ map <Leader>pp "0p
 autocmd BufNewFile *.cpp,*.c,*.cc,*.h exec ":call Setfilehead()"
 func Setfilehead()
     call append(0, '/*')
-    call append(1, ' * Copyright (c) '.strftime("%Y").' Alibaba Inc.')
+    call append(1, ' * Copyright (c) '.strftime("%Y").'  Inc.')
     call append(2, ' * All rights reserved.' )
     call append(3, ' *')
-    call append(4, ' * Author: linpu<lingpu.glp@alibaba-inc.com>')
+    call append(4, ' * Author: <>')
     call append(5, ' * Date: '.strftime("%Y-%m-%d"))
     call append(6, ' * Brief: ')
     call append(7, ' */')
