@@ -360,8 +360,8 @@ endif
 " let g:airline_symbols.branch = ''
 " let g:airline_symbols.readonly = ''
 " let g:airline_symbols.linenr = ''
-
-" vundle 环境设置
+ 
+" vundle 环境设置 git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 " 安装命令：
 " :Plugin<Install|Clean|Search>
 filetype off
